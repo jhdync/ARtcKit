@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "ARtcKit_iOS"
-  spec.version      = "4.0.0.6"
+  spec.version      = "4.0.0.7"
   spec.summary      = "AriOSSDK"
 
   # This description is used to generate tags and improve search results.
