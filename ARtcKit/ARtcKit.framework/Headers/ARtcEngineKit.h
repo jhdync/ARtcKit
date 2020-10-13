@@ -210,6 +210,51 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 */
 - (ARConnectionStateType)getConnectionState;
 
+/** 开始跨频道媒体流转发。该方法可用于实现跨频道连麦等场景。
+
+ 成功调用该方法后，SDK 会触发 channelMediaRelayStateDidChange 和 didReceiveChannelMediaRelayEvent 回调，并在回调中报告当前的跨频道媒体流转发状态和事件。
+
+ 如果 channelMediaRelayStateDidChange 回调报告 ARChannelMediaRelayStateRunning(2) 和 ARChannelMediaRelayStateIdle(0)，且 didReceiveChannelMediaRelayEvent 回调报告 ARChannelMediaRelayEventSentToDestinationChannel(4)，则表示 SDK 开始在源频道和目标频道之间转发媒体流。
+ 如果 channelMediaRelayStateDidChange 回调报告 ARChannelMediaRelayStateFailure(3)，则表示跨频道媒体流转发出现异常。
+ 
+**Note**
+
+ - 请在成功加入频道后调用该方法。
+ - 该方法仅对直播场景下的主播有效。
+ - 成功调用该方法后，若你想再次调用该方法，必须先调用 stopChannelMediaRelay 方法退出当前的转发状态。
+ - 跨频道媒体流转发功能需要提交工单联系技术支持开通。
+
+ @param config 跨频道媒体流转发参数配置: ARChannelMediaRelayConfiguration 类。
+
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)startChannelMediaRelay:(ARChannelMediaRelayConfiguration * _Nonnull)config;
+
+/** 更新媒体流转发的频道。成功开始跨频道转发媒体流后，如果你希望将流转发到多个目标频道，或退出当前的转发频道，可以调用该方法。
+
+ 成功调用该方法后，SDK 会触发 didReceiveChannelMediaRelayEvent 回调，并在回调中报告状态码 ARChannelMediaRelayEventUpdateDestinationChannel(7)。
+
+ **Note**
+
+ - 请在 startChannelMediaRelay 方法后调用该方法，更新媒体流转发的频道。
+ - 跨频道媒体流转发最多支持 4 个目标频道。如果直播间里已经有 4 个频道了，你可以在调用该方法之前，调用 ARChannelMediaRelayConfiguration 中的 removeDestinationInfoForChannelName 方法移除不需要的频道。
+ 
+ @param config 跨频道媒体流转发参数配置: ARChannelMediaRelayConfiguration 类。
+
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)updateChannelMediaRelay:(ARChannelMediaRelayConfiguration * _Nonnull)config;
+
+/** 停止跨频道媒体流转发。一旦停止，主播会退出所有目标频道。
+
+ 成功调用该方法后，SDK 会触发 channelMediaRelayStateDidChange 回调。如果报告 ARChannelMediaRelayStateIdle(0) 和 ARChannelMediaRelayErrorNone(0)，则表示已停止转发媒体流。
+
+ Note: 如果该方法调用不成功，SDK 会触发 channelMediaRelayStateDidChange 回调，并报告状态码 ARChannelMediaRelayErrorServerNoResponse(2) 或 ARChannelMediaRelayEventUpdateDestinationChannelRefused(8)。你可以调用 leaveChannel 方法离开频道，跨频道媒体流转发会自动停止。
+ 
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)stopChannelMediaRelay;
+
 //MARK: - 音频核心方法
 
 /**-----------------------------------------------------------------------------
@@ -1005,6 +1050,50 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 
 //MARK: - 音频录制
 
+/**-----------------------------------------------------------------------------
+ * @name 音频录制
+ * -----------------------------------------------------------------------------
+ */
+
+/** 开始客户端录音
+
+SDK 支持通话过程中在客户端进行录音。调用该方法后，你可以录制频道内所有用户的音频，并得到一个包含所有用户声音的录音文件。录音文件格式可以为:
+
+ - .wav: 文件大，音质保真度较高。
+ - .aac: 文件小，音质保真度较低。
+
+**Note**
+
+ - 请确保你在该方法中指定的路径存在并且可写。
+ - 该接口需在 joinChannelByToken 之后调用。如果调用 leaveChannel 时还在录音，录音会自动停止。
+ - 为保证录音效果，当 sampleRate 设为 44100 Hz 或 48000 Hz 时，建议将 quality 设为 ARAudioRecordingQualityMedium 或 ARAudioRecordingQualityHigh 。
+
+ @param filePath 录音文件在本地保存的绝对路径，由用户自行指定，需精确到文件名及格式，例如：/var/mobile/Containers/Data/audio.aac。
+ @param sampleRate 录音采样率（Hz），可以设为以下值：
+
+ - 16000
+ - (Default) 32000
+ - 44100
+ - 48000
+
+ @param quality 录音音质。详见 ARAudioRecordingQuality 。
+
+  @return 0方法调用成功，<0方法调用失败
+ */
+- (int)startAudioRecording:(NSString * _Nonnull)filePath
+                   sampleRate:(NSInteger)sampleRate
+                   quality:(ARAudioRecordingQuality)quality;
+
+/** 停止客户端录音
+
+**Note:**
+
+ 该接口需要在 leaveChannel 之前调用，不然会在调用 leaveChannel 时自动停止。
+
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)stopAudioRecording;
+
 //MARK: - 开启声卡采集
 
 //MARK: - 音频其他方法
@@ -1149,6 +1238,47 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 //MARK: - 加密
 
 //MARK: - 直播输入在线媒体流
+
+/**-----------------------------------------------------------------------------
+ * @name 直播输入在线媒体流
+ * -----------------------------------------------------------------------------
+ */
+
+/** 输入在线媒体流 URL
+
+ 该方法通过在服务端拉取视频流并发送到频道中，将正在播放的视频输入到正在进行的直播中。可主要应用于赛事直播、多人看视频互动等直播场景。
+
+ 调用该方法后，SDK 会在本地触发 streamInjectedStatusOfUrl 回调，报告输入在线媒体流的状态。
+
+ 成功输入媒体流后，该音视频流会出现在频道中，频道内所有用户都会收到 didJoinedOfUid 回调，其中 uid 为 "share666"。
+
+**Note:**
+
+ - 频道内同一时间只允许输入一个在线媒体流。
+ - 请确保已开通旁路推流的功能，详见前提条件。
+ @param url    添加到直播中的视频流 URL 地址， 支持 RTMP， HLS， HTTP-FLV 协议传输。
+
+ - 支持的音频编码格式：AAC。
+ - 支持的视频编码格式：H264 (AVC)。
+ @param config 输入的视频流设置，详见 ARLiveInjectStreamConfig 。
+
+@return 0方法调用成功，<0方法调用失败
+ 
+    - ARErrorCodeInvalidArgument(-2)：输入的 URL 为空。请重新调用该方法，并确认输入的媒体流的 URL 是有效的。
+    - ARErrorCodeNotInitialized(-7)：引擎没有初始化。请确认调用该方法前已创建 RtcEngine 对象并完成初始化。
+    - ARErrorCodeNotSupported(-4)：频道非直播场景。请调用 setChannelProfile 并将频道设置为直播场景再调用该方法。
+    - ARErrorCodeNotReady(-3)：用户没有加入频道。
+*/
+- (int)addInjectStreamUrl:(NSString * _Nonnull)url config:(ARLiveInjectStreamConfig * _Nonnull)config;
+
+/** 删除输入的在线媒体流
+
+ 成功删除后会触发 didOfflineOfUid 回调，UID 为  "share666"。
+
+ @param url 已输入、待删除的在线媒体流 URL 地址
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)removeInjectStreamUrl:(NSString * _Nonnull)url;
 
 //MARK: - CDN 旁路推流
 

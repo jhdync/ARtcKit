@@ -342,6 +342,14 @@
 * -----------------------------------------------------------------------------
 */
 
+/** 本地音乐文件播放已结束回调
+
+本地用户调用 startAudioMixing 播放音乐文件音乐结束后，会触发该回调。如果调用 startAudioMixing 失败，会在 didOccurWarning 回调里，返回警告代码 ARWarningCodeAudioMixingOpenError。
+
+@param engine  ARtcEngineKit 对象。
+*/
+- (void)rtcEngineLocalAudioMixingDidFinish:(ARtcEngineKit *_Nonnull)engine;
+
 /** 本地音效文件播放已结束回调
 
  当调用 playEffect 播放音效结束后，会触发该回调。
@@ -353,7 +361,20 @@
 
 //MARK: - CDN Publisher Delegate Methods
 
-//MARK: - Inject Stream URL Delegate Methods
+//MARK: - 直播输入在线媒体流事件回调
+/**-----------------------------------------------------------------------------
+* @name 直播输入在线媒体流事件回调
+* -----------------------------------------------------------------------------
+*/
+
+/** 输入外部视频流状态回调
+
+ @param engine  ARtcEngineKit 对象
+ @param url 输入进直播的外部视频源 URL 地址
+ @param uid 用户 ID
+ @param status 详见ARInjectStreamStatus
+ */
+- (void)rtcEngine:(ARtcEngineKit *_Nonnull)engine streamInjectedStatusOfUrl:(NSString *_Nonnull)url uid:(NSString * _Nonnull)uid status:(ARInjectStreamStatus)status;
 
 //MARK: - Stream Message Delegate Methods
 
@@ -400,6 +421,29 @@
 - (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine facePositionDidChangeWidth:(int)width previewHeight:(int)height faces:(NSArray<ARFacePositionInfo *> *_Nullable)faces;
 
 #endif
+
+//MARK: - 跨频道媒体流转发回调
+
+/**-----------------------------------------------------------------------------
+* @name 跨频道媒体流转发回调
+* -----------------------------------------------------------------------------
+*/
+/** 跨频道媒体流转发状态发生改变回调。
+
+ 当跨频道媒体流转发状态发生改变时，SDK 会触发该回调，并报告当前的转发状态以及相关的错误信息。
+ 
+ @param engine ARtcEngineKit 对象
+ @param state 跨频道媒体流转发状态 ARChannelMediaRelayState。
+ @param error 跨频道媒体流转发出错的错误码 ARChannelMediaRelayError。
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine channelMediaRelayStateDidChange:(ARChannelMediaRelayState)state error:(ARChannelMediaRelayError)error;
+
+/** 跨频道媒体流转发事件回调。
+ 
+ @param engine ARtcEngineKit 对象
+ @param event 跨频道媒体流转发事件码
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine didReceiveChannelMediaRelayEvent:(ARChannelMediaRelayEvent)event;
 
 //MARK: - 其它回调方法(不推荐使用)
 /**-----------------------------------------------------------------------------
