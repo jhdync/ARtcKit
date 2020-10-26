@@ -230,6 +230,15 @@
  */
 - (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine localAudioStateChange:(ARAudioLocalState)state error:(ARAudioLocalError)error;
 
+/** 已显示远端视频首帧回调
+ 
+@param engine ARtcEngineKit 对象
+@param uid 远端用户 ID
+@param size 视频尺寸（宽和高）
+@param elapsed 从本地用户调用joinChannelByToken到发生此事件过去的时间（ms）。
+*/
+- (void)rtcEngine:(ARtcEngineKit *_Nonnull)engine firstRemoteVideoFrameOfUid:(NSString *_Nonnull)uid size:(CGSize)size elapsed:(NSInteger)elapsed;
+
 /** 本地或远端视频大小和旋转信息发生改变回调
 
  @param engine   ARtcEngineKit 对象
@@ -380,7 +389,28 @@
 
 //MARK: - Miscellaneous Delegate Methods
 
-//MARK: - Fallback Delegate Methods
+//MARK: - 音视频流回退事件回调
+/**-----------------------------------------------------------------------------
+ * @name 本地发布流已回退为音频流
+ * -----------------------------------------------------------------------------
+ */
+
+ /** 远端订阅流已回退为音频流
+
+  如果你调用了 setRemoteSubscribeFallbackOption, 接口并将回退选项设置为 ARStreamFallbackOptionAudioOnly，当下行网络环境不理想、仅接收远端音频流时，或当下行网络改善、恢复订阅音视频流时，会触发该回调。
+
+ **Note:**
+
+  远端订阅流因弱网环境不能同时满足音视频而回退为小流时，你可以使用 remoteVideoStats 方法来监控远端视频大小流的切换。
+
+ @param engine              ARtcEngineKit 对象。
+ @param isFallbackOrRecover 回退为音频流或恢复为音视频流：
+
+ * YES: 由于网络环境不理想，远端订阅流已回退为音频流
+ * NO: 由于网络环境改善，订阅的音频流已恢复为音视频流
+ @param uid  远端用户ID
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine didRemoteSubscribeFallbackToAudioOnly:(BOOL)isFallbackOrRecover byUid:(NSString *_Nonnull)uid;
 
 //MARK: - 媒体设备事件回调
 /**-----------------------------------------------------------------------------
@@ -450,20 +480,6 @@
 * @name 其它回调方法
 * -----------------------------------------------------------------------------
 */
-
-/** 已显示远端视频首帧回调
- 
-**Note**
- 
-推荐使用remoteVideoStateChangedOfUid回调。
- 
-@param engine ARtcEngineKit 对象
-@param uid 远端用户 ID
-@param size 视频尺寸（宽和高）
-@param elapsed 从本地用户调用joinChannelByToken到发生此事件过去的时间（ms）。
-*/
-- (void)rtcEngine:(ARtcEngineKit *_Nonnull)engine firstRemoteVideoFrameOfUid:(NSString *_Nonnull)uid size:(CGSize)size elapsed:(NSInteger)elapsed;
-
 /** 已完成远端视频首帧解码回调
  
 **Note**

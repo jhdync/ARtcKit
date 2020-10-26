@@ -1136,7 +1136,7 @@ typedef NS_ENUM(NSInteger, ARStreamFallbackOptions ) {
      */
     ARStreamFallbackOptionDisabled = 0,
     /**
-     1:在下行网络条件较差的情况下，SDK 将接收视频小流（低分辨率、低码率视频s流）。此选项仅适用于 setRemoteSubscribeFallbackOption。
+     1:在下行网络条件较差的情况下，SDK 将接收视频小流（低分辨率、低码率视频流）。此选项仅适用于 setRemoteSubscribeFallbackOption。
      */
     ARStreamFallbackOptionVideoStreamLow = 1,
     /**
@@ -1394,6 +1394,51 @@ typedef NS_ENUM(NSInteger, ARChannelMediaRelayError) {
     /** 11: 目标频道的 Token 已过期。
      */
     ARChannelMediaRelayErrorDestinationTokenExpired = 11,
+};
+
+/** 发布状态 */
+typedef NS_ENUM(NSUInteger, ARStreamPublishState) {
+    /** 0: 加入频道后的初始发布状态。
+     */
+    ARStreamPublishIdle = 0,
+    /** 1: 发布失败。可能是因为：
+     - 本地用户调用 muteLocalAudioStream(YES) 或 muteLocalVideoStream(YES) 停止发送本地媒体流。
+     - 本地用户调用 disableAudio 或 disableVideo 关闭本地音频或视频模块。
+     - 本地用户调用 enableLocalAudio(NO) 或 enableLocalVideo(NO) 关闭本地音频或视频采集。
+     - 本地用户角色为观众。
+     */
+    ARStreamPublishNoPublished = 1,
+    /** 2: 正在发布。
+     */
+    ARStreamPublishPublishing = 2,
+    /** 3: 发布成功。
+     */
+    ARStreamPublishPublished = 3,
+};
+
+/** 订阅状态。 */
+typedef NS_ENUM(NSUInteger, ARStreamSubscribeState) {
+    /** 0: 加入频道后的初始订阅状态。
+     */
+    ARStreamSubscribeIdle = 0,
+    /** 1: 订阅失败。可能是因为：
+     
+     - 远端用户：
+        - 调用 muteLocalAudioStream(YES) 或 muteLocalVideoStream(YES) 停止发送本地媒体流。
+        - 调用 disableAudio 或 disableVideo 关闭本地音频或视频模块。
+        - 调用 enableLocalAudio(NO) 或 enableLocalVideo(NO) 关闭本地音频或视频采集。
+     - 用户角色为观众。
+     - 本地用户调用以下方法停止接收远端媒体流：
+        - 调用 muteRemoteAudioStream(YES)、muteAllRemoteAudioStreams(YES) 或 setDefaultMuteAllRemoteAudioStreams(YES) 停止接收远端音频流。
+        - 调用 muteRemoteVideoStream(YES)、muteAllRemoteVideoStreams(YES) 或 setDefaultMuteAllRemoteVideoStreams(YES) 停止接收远端视频流。
+     */
+    ARStreamSubscribeNoSubscribed = 1,
+    /** 2: 正在订阅。
+     */
+    ARStreamSubscribeSubscribing = 2,
+    /** 3: 收到了远端流，订阅成功。
+     */
+    ARStreamSubscribeSubscribed = 3,
 };
 
 #endif /* AREnumerates_h */

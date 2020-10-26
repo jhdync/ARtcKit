@@ -966,7 +966,7 @@ enum AUDIO_REVERB_PRESET {
     /**
      * The reverberation of the virtual stereo. The virtual stereo is an effect that renders the monophonic
      * audio as the stereo audio, so that all users in the channel can hear the stereo voice effect.
-     * To achieve better virtual stereo reverberation, Agora recommends setting `profile` in `setAudioProfile`
+     * To achieve better virtual stereo reverberation, AR recommends setting `profile` in `setAudioProfile`
      * as `AUDIO_PROFILE_MUSIC_HIGH_QUALITY_STEREO(5)`.
      */
     AUDIO_VIRTUAL_STEREO = 0x00200001
@@ -1779,7 +1779,7 @@ struct LocalVideoStats
    * - VIDEO_CODEC_H264 = 2: (Default) H.264.
    */
   VIDEO_CODEC_TYPE codecType;
-  /** The video packet loss rate (%) from the local client to the Agora edge server before applying the anti-packet loss strategies.
+  /** The video packet loss rate (%) from the local client to the AR edge server before applying the anti-packet loss strategies.
    */
   unsigned short txPacketLossRate;
   /** The capture frame rate (fps) of the local video.
@@ -1860,7 +1860,7 @@ struct LocalAudioStats
     /** The average sending bitrate (Kbps).
      */
     int sentBitrate;
-    /** The audio packet loss rate (%) from the local client to the Agora edge server before applying the anti-packet loss strategies.
+    /** The audio packet loss rate (%) from the local client to the AR edge server before applying the anti-packet loss strategies.
      */
     unsigned short txPacketLossRate;
 };
@@ -2014,7 +2014,7 @@ struct VideoEncoderConfiguration {
     int bitrate;
     /** The minimum encoding bitrate (Kbps).
 
-     The SDK automatically adjusts the encoding bitrate to adapt to the network conditions. Using a value greater than the default value forces the video encoder to output high-quality images but may cause more packet loss and hence sacrifice the smoothness of the video transmission. That said, unless you have special requirements for image quality, Agora does not recommend changing this value.
+     The SDK automatically adjusts the encoding bitrate to adapt to the network conditions. Using a value greater than the default value forces the video encoder to output high-quality images but may cause more packet loss and hence sacrifice the smoothness of the video transmission. That said, unless you have special requirements for image quality, AR does not recommend changing this value.
 
      @note This parameter applies only to the `LIVE_BROADCASTING` profile.
      */
@@ -2058,7 +2058,7 @@ struct VideoEncoderConfiguration {
     {}
 };
 
-/** The video and audio properties of the user displaying the video in the CDN live. Agora supports a maximum of 17 transcoding users in a CDN streaming channel.
+/** The video and audio properties of the user displaying the video in the CDN live. AR supports a maximum of 17 transcoding users in a CDN streaming channel.
 */
 typedef struct TranscodingUser {
   /** User ID of the user displaying the video in the CDN live.
@@ -2168,12 +2168,12 @@ typedef struct LiveStreamAdvancedFeature {
 */
 typedef struct LiveTranscoding {
    /** The width of the video in pixels. The default value is 360.
-    * - When pushing video streams to the CDN, ensure that `width` is at least 64; otherwise, the Agora server adjusts the value to 64.
+    * - When pushing video streams to the CDN, ensure that `width` is at least 64; otherwise, the AR server adjusts the value to 64.
     * - When pushing audio streams to the CDN, set `width` and `height` as 0.
     */
     int width;
     /** The height of the video in pixels. The default value is 640.
-     * - When pushing video streams to the CDN, ensure that `height` is at least 64; otherwise, the Agora server adjusts the value to 64.
+     * - When pushing video streams to the CDN, ensure that `height` is at least 64; otherwise, the AR server adjusts the value to 64.
      * - When pushing audio streams to the CDN, set `width` and `height` as 0.
     */
     int height;
@@ -3619,7 +3619,7 @@ public:
      * @note
      * - If the SDK does not detect a face, it reduces the frequency of this callback to reduce power consumption on the local device.
      * - The SDK stops triggering this callback when a human face is in close proximity to the screen.
-     * - On Android, the `distance` value reported in this callback may be slightly different from the actual distance. Therefore, Agora does not recommend using it for
+     * - On Android, the `distance` value reported in this callback may be slightly different from the actual distance. Therefore, AR does not recommend using it for
      * accurate calculation.
      * @param imageWidth The width (px) of the local video.
      * @param imageHeight The height (px) of the local video.
@@ -4634,7 +4634,7 @@ struct RtcEngineContext
     /**
      * The region for connection. This advanced feature applies to scenarios that have regional restrictions.
      *
-     * For the regions that Agora supports, see #AREA_CODE. After specifying the region, the app that integrates the Agora SDK connects to the Agora servers within that region.
+     * For the regions that AR supports, see #AREA_CODE. After specifying the region, the app that integrates the AR SDK connects to the AR servers within that region.
      */
 	unsigned int areaCode;
     RtcEngineContext()
@@ -4670,7 +4670,7 @@ public:
          - For the receiver: the ID of the user who sent the metadata.
          - For the sender: ignore it.
          */
-        unsigned int uid;
+        char* uid;
         /** Buffer size of the sent or received Metadata.
          */
         unsigned int size;
@@ -4775,7 +4775,7 @@ struct EncryptionConfig{
     /// @endcond
 };
 
-/** IRtcEngine is the base interface class of the Agora SDK that provides the main Agora SDK methods invoked by your application.
+/** IRtcEngine is the base interface class of the AR SDK that provides the main AR SDK methods invoked by your application.
 
 Enable the AR SDK's communication functionality through the creation of an IRtcEngine object, then call the methods of this object.
  */
@@ -4813,7 +4813,7 @@ public:
      * till the `release` method completes executing.
      *
      * @param sync
-     * - true: Synchronous call. Agora suggests calling this method in a sub-thread to avoid congestion in the main thread
+     * - true: Synchronous call. AR suggests calling this method in a sub-thread to avoid congestion in the main thread
      * because the synchronous call and the app cannot move on to another task until the execution completes.
      * Besides, you **cannot** call this method in any method or callback of the SDK. Otherwise, the SDK cannot release the
      * resources occupied by the `IRtcEngine` instance until the callbacks return results, which may result in a deadlock.
@@ -4824,9 +4824,9 @@ public:
      */
     virtual void release(bool sync=false) = 0;
 
-    /** Sets the channel profile of the Agora IRtcEngine.
+    /** Sets the channel profile of the AR IRtcEngine.
      *
-     * The Agora IRtcEngine differentiates channel profiles and applies optimization algorithms accordingly.
+     * The AR IRtcEngine differentiates channel profiles and applies optimization algorithms accordingly.
      * For example, it prioritizes smoothness and low latency for a video call, and prioritizes video quality for the live interactive video streaming.
      *
      * @warning
@@ -4835,7 +4835,7 @@ public:
      * - The default audio route and video encoding bitrate are different in different channel profiles. For details, see
      * \ref IRtcEngine::setDefaultAudioRouteToSpeakerphone "setDefaultAudioRouteToSpeakerphone" and \ref IRtcEngine::setVideoEncoderConfiguration "setVideoEncoderConfiguration".
      *
-     * @param profile The channel profile of the Agora IRtcEngine. See #CHANNEL_PROFILE_TYPE
+     * @param profile The channel profile of the AR IRtcEngine. See #CHANNEL_PROFILE_TYPE
      * @return
      * - 0(ERR_OK): Success.
      * - < 0: Failure.
@@ -5008,7 +5008,7 @@ public:
      @note
      - Ensure that you set the `userAccount` parameter. Otherwise, this method does not take effect.
      - Ensure that the value of the `userAccount` parameter is unique in the channel.
-     - To ensure smooth communication, use the same parameter type to identify the user. For example, if a user joins the channel with a user ID, then ensure all the other users use the user ID too. The same applies to the user account. If a user joins the channel with the Agora Web SDK, ensure that the uid of the user is set to the same parameter type.
+     - To ensure smooth communication, use the same parameter type to identify the user. For example, if a user joins the channel with a user ID, then ensure all the other users use the user ID too. The same applies to the user account. If a user joins the channel with the AR Web SDK, ensure that the uid of the user is set to the same parameter type.
 
      @param appId The App ID of your project.
      @param userAccount The user account. The maximum length of this parameter is 255 bytes. Ensure that you set this parameter and do not set it as null. Supported character scopes are:
@@ -6559,7 +6559,7 @@ public:
 
     /** Shares the whole or part of a window by specifying the window ID.
 
-     Since v3.0.0, this method supports sharing with common Windows platforms. Agora tests the mainstream Windows applications, see details as follows:
+     Since v3.0.0, this method supports sharing with common Windows platforms. AR tests the mainstream Windows applications, see details as follows:
 
      <table>
          <tr>
@@ -6771,7 +6771,7 @@ public:
 #if defined(_WIN32)
     /** Sets a custom video source.
      *
-     * During real-time communication, the Agora SDK enables the default video input device, that is, the built-in camera to
+     * During real-time communication, the AR SDK enables the default video input device, that is, the built-in camera to
      * capture video. If you need a custom video source, implement the IVideoSource class first, and call this method to add
      * the custom video source to the SDK.
      *
@@ -6935,13 +6935,13 @@ public:
      *
      * @since v3.1.0
      *
-     * In scenarios requiring high security, Agora recommends calling this method to enable the built-in encryption before joining a channel.
+     * In scenarios requiring high security, AR recommends calling this method to enable the built-in encryption before joining a channel.
      *
      * All users in the same channel must use the same encryption mode and encryption key. Once all users leave the channel, the encryption key of this channel is automatically cleared.
      *
      * @note
      * - If you enable the built-in encryption, you cannot use the RTMP streaming function.
-     * - Agora supports four encryption modes. If you choose an encryption mode (excepting `SM4_128_ECB` mode), you need to add an external encryption library when integrating the SDK. See the advanced guide *Channel Encryption*.
+     * - AR supports four encryption modes. If you choose an encryption mode (excepting `SM4_128_ECB` mode), you need to add an external encryption library when integrating the SDK. See the advanced guide *Channel Encryption*.
      *
      * @param enabled Whether to enable the built-in encryption:
      * - true: Enable the built-in encryption.
@@ -7281,7 +7281,7 @@ public:
     virtual int removeInjectStreamUrl(const char* url) = 0;
     virtual bool registerEventHandler(IRtcEngineEventHandler *eventHandler) = 0;
     virtual bool unregisterEventHandler(IRtcEngineEventHandler *eventHandler) = 0;
-    /** Agora supports reporting and analyzing customized messages.
+    /** AR supports reporting and analyzing customized messages.
      *
      * @since v3.1.0
      *
