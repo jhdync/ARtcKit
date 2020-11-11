@@ -368,7 +368,80 @@
  */
 - (void)rtcEngineDidAudioEffectFinish:(ARtcEngineKit * _Nonnull)engine soundId:(NSInteger)soundId;
 
-//MARK: - CDN Publisher Delegate Methods
+//MARK: - CDN 旁路推流事件回调
+
+/**-----------------------------------------------------------------------------
+ * @name CDN 旁路推流事件回调
+ * -----------------------------------------------------------------------------
+ */
+
+/** RTMP 推流状态发生改变回调
+
+ 该回调返回本地用户调用 addPublishStreamUrl 或 removePublishStreamUrl 方法的结果。
+
+ RTMP 推流状态发生改变时，SDK 会触发该回调，并在回调中明确状态发生改变的 URL 地址及当前推流状态。
+
+ 该回调方便推流用户了解当前的推流状态；推流出错时，你可以通过返回的错误码了解出错的原因，方便排查问题。
+
+@param engine ARtcEngineKit 对象。
+@param url 推流状态发生改变的 URL 地址。
+@param state 当前的推流状态，详见 ARtmpStreamingState。当推流状态为 ARtmpStreamingStateFailure(4) 时，你可以在 errorCode 参数中查看返回的错误信息。
+@param errorCode 具体的推流错误信息，详见 ARtmpStreamingErrorCode。
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine rtmpStreamingChangedToState:(NSString * _Nonnull)url state:(ARtmpStreamingState)state errorCode:(ARtmpStreamingErrorCode)errorCode;
+
+/** RTMP 推流事件回调。
+
+ @param engine ARtcEngineKit 对象。
+ @param url RTMP 推流 URL。
+ @param eventCode RTMP 推流事件码。详见 ARtmpStreamingEvent 。
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine rtmpStreamingEventWithUrl:(NSString * _Nonnull)url eventCode:(ARtmpStreamingEvent)eventCode;
+
+/** 开启旁路推流的结果回调
+ 
+ 返回 addPublishStreamUrl 方法的调用结果。如果调用不成功，你可以在 errorCode 参数中查看详细的错误信息。
+
+ @param engine    ARtcEngineKit 对象
+ @param url       主播推流地址或输入的外部音视频流地址
+ @param errorCode 常见的错误码如下，详情见 ARErrorCode
+
+ - ARErrorCodeNoError(0)：推流成功
+ - ARErrorCodeFailed(1)：推流失败
+ - ARErrorCodeInvalidArgument(2)：参数错误，如果你在调用 addPublishStreamUrl 前没有调用 setLiveTranscoding 配置 ARLiveTranscoding ，会导致此错误。
+ - ARErrorCodeTimedOut(10)：推流超时未成功
+ - ARErrorCodeAlreadyInUse(19)：推流地址已经在推流
+ - ARErrorCodeAbort(20): SDK 与推流服务器断开连接，推流中断
+ - ARErrorCodeResourceLimited(22)：后台没有足够资源推流
+ - ARErrorCodeEncryptedStreamNotAllowedPublish(130)：推流已加密不能推流
+ - ARErrorCodePublishStreamCDNError(151)：CDN 相关错误。请调用 removePublishStreamUrl 方法删除原来的推流地址，然后调用 addPublishStreamUrl 方法重新推流到新地址。
+ - ARErrorCodePublishStreamNumReachLimit(152)：单个主播的推流地址数目达到上限 10。请删掉一些不用的推流地址再增加推流地址。
+ - ARErrorCodePublishStreamNotAuthorized(153)：操作不属于主播自己的流，例如更新其他主播的流参数、停止其他主播的流。请检查 App 逻辑。
+ - ARErrorCodePublishStreamInternalServerError(154)：推流服务器出现错误。请调用 addPublishStreamUrl 重新推流。
+ - ARErrorCodePublishStreamFormatNotSuppported(156)：推流地址格式有错误。请检查推流地址格式是否正确。
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine streamPublishedWithUrl:(NSString * _Nonnull)url errorCode:(ARErrorCode)errorCode;
+
+/** 停止旁路推流的结果回调
+
+ 返回 removePublishStreamUrl 方法的调用结果。
+
+ @param engine ARtcEngineKit object.
+ @param url    主播停止推流的 RTMP 地址
+ */
+- (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine streamUnpublishedWithUrl:(NSString * _Nonnull)url;
+
+/** 旁路推流设置被更新回调
+
+ setLiveTranscoding 方法中的直播参数 LiveTranscoding rtcEngineTranscodingUpdated 回调会被触发并向主播报告更新信息。
+
+ **Note:**
+
+ 首次调用 setLiveTranscoding 方法设置转码参数 LiveTranscoding 时，不会触发此回调。
+
+ @param engine ARtcEngineKit 对象。
+ */
+- (void)rtcEngineTranscodingUpdated:(ARtcEngineKit * _Nonnull)engine;
 
 //MARK: - 直播输入在线媒体流事件回调
 /**-----------------------------------------------------------------------------

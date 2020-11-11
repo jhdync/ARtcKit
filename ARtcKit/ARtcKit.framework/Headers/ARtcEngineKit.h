@@ -1294,6 +1294,67 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 - (int)removeInjectStreamUrl:(NSString * _Nonnull)url;
 
 //MARK: - CDN 旁路推流
+/**-----------------------------------------------------------------------------
+ * @name CDN 旁路推流
+ * -----------------------------------------------------------------------------
+ */
+
+/** 增加旁路推流地址
+
+ 该方法用于添加旁路推流地址，调用该方法后，SDK 会在本地触发 rtmpStreamingChangedToState 回调，报告增加旁路推流地址的状态。
+
+ **Note:**
+
+ - 该方法仅适用于直播场景。
+ - 请确保在成功加入频道后再调用该接口。
+ - 请确保已开通旁路推流的功能
+ - 该方法每次只能增加一路旁路推流地址。若需推送多路流，则需多次调用该方法
+
+ @param url CDN 推流地址，格式为 RTMP。该字符串长度不能超过 1024 字节。URL 不支持中文等特殊字符。
+ @param transcodingEnabled 是否转码：
+
+ - YES: 转码（转码是指在旁路推流时对音视频流做一些转码处理后再推送到其他 RTMP 服务器，常见的适用场景是对多主播进行混流、合图）。如果设为 YES，需先调用 setLiveTranscoding 方法。
+ - NO: 不转码。
+
+ @return 0方法调用成功，<0方法调用失败
+
+  - ARErrorCodeInvalidArgument(-2)：参数无效，一般是 URL 为空或是长度为 0 的的字符串
+  - ARErrorCodeNotInitialized(-7)：推流时未初始化引擎
+ */
+- (int)addPublishStreamUrl:(NSString * _Nonnull)url transcodingEnabled:(BOOL)transcodingEnabled;
+
+/** 删除旁路推流地址
+
+ 该方法用于删除旁路推流过程中已经设置的 RTMP 推流地址。调用该方法后，SDK 会在本地触发 rtmpStreamingChangedToState 回调，报告删除旁路推流地址的状态。
+
+**Note:**
+
+ * 该方法仅适用于直播场景。
+ * 该方法每次只能删除一路旁路推流地址。若需删除多路流，则需多次调用该方法。
+ * URL 不支持中文等特殊字符。
+
+ @param url 待删除的推流地址，格式为 RTMP。该字符串长度不能超过 1024 字节
+
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)removePublishStreamUrl:(NSString * _Nonnull)url;
+
+/** 设置直播转码
+
+ 该方法用于旁路推流的视图布局及音频设置等。调用该方法更新转码设置后本地会触发 rtcEngineTranscodingUpdated 回调。
+
+ **Note**
+
+ - 该方法仅适用于直播场景。
+ - 请确保已开通 CDN 旁路推流的功能
+ - 首次调用该方法更新转码设置时，不会触发 rtcEngineTranscodingUpdated 回调。
+
+
+ @param transcoding 一个 ARLiveTranscoding 的对象，详细设置见 ARLiveTranscoding 。
+
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)setLiveTranscoding:(ARLiveTranscoding *_Nullable)transcoding;
 
 //MARK: - 数据流
 

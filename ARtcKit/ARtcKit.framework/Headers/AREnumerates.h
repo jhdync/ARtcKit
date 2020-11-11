@@ -1441,4 +1441,72 @@ typedef NS_ENUM(NSUInteger, ARStreamSubscribeState) {
     ARStreamSubscribeSubscribed = 3,
 };
 
+/** 用于旁路直播的输出视频的编解码规格 */
+typedef NS_ENUM(NSInteger, ARVideoCodecProfileType) {
+    /** 66：Baseline 级别的视频编码规格，一般用于低阶或需要额外容错的应用，比如视频通话、手机视频等。 */
+    ARVideoCodecProfileTypeBaseLine = 66,
+    /** 77：Main 级别的视频编码规格，一般用于主流消费类电子产品，如 mp4、便携的视频播放器、PSP 和 iPad 等。 */
+    ARVideoCodecProfileTypeMain = 77,
+    /** 100：（默认）High 级别的视频编码规格，一般用于广播及视频碟片存储，高清电视。 */
+    ARVideoCodecProfileTypeHigh = 100
+};
+
+/** 音频编码规格 */
+typedef NS_ENUM(NSInteger, ARAudioCodecProfileType) {
+    /** 0: (默认) LC-AAC 规格，表示基本音频编码规格。 */
+  ARAudioCodecProfileLCAAC = 0,
+  /** 1: HE-AAC 规格，表示高效音频编码规格。 */
+  ARAudioCodecProfileHEAAC = 1
+};
+
+/** 推流错误信息 */
+typedef NS_ENUM(NSUInteger, ARtmpStreamingErrorCode) {
+  /** 推流成功 */
+  ARtmpStreamingErrorCodeOK = 0,
+  /** 参数无效。请检查输入参数是否正确。例如如果你在调用 addPublishStreamUrl 前没有调用 setLiveTranscoding 设置转码参数，SDK 会返回该错误。 */
+  ARtmpStreamingErrorCodeInvalidParameters = 1,
+  /** 推流已加密，不能推流。*/
+  ARtmpStreamingErrorCodeEncryptedStreamNotAllowed = 2,
+  /** 推流超时未成功。可调用 addPublishStreamUrl 重新推流。 */
+  ARtmpStreamingErrorCodeConnectionTimeout = 3,
+  /** 推流服务器出现错误。请调用 addPublishStreamUrl 重新推流。 */
+  ARtmpStreamingErrorCodeInternalServerError = 4,
+  /** RTMP 服务器出现错误。 */
+  ARtmpStreamingErrorCodeRtmpServerError = 5,
+  /** 推流请求过于频繁。*/
+  ARtmpStreamingErrorCodeTooOften = 6,
+  /** 单个主播的推流地址数目达到上线 10。请删掉一些不用的推流地址再增加推流地址。*/
+  ARtmpStreamingErrorCodeReachLimit = 7,
+  /** 主播操作不属于自己的流。例如更新其他主播的流参数、停止其他主播的流。请检查 App 逻辑。*/
+  ARtmpStreamingErrorCodeNotAuthorized = 8,
+  /** 服务器未找到这个流。 */
+  ARtmpStreamingErrorCodeStreamNotFound = 9,
+  /** 推流地址格式有错误。请检查推流地址格式是否正确。*/
+  ARtmpStreamingErrorCodeFormatNotSupported = 10,
+};
+
+/** RTMP 推流时发生的事件。*/
+typedef NS_ENUM(NSUInteger, ARtmpStreamingEvent) {
+  /** RTMP 推流时，添加背景图或水印出错。*/
+  ARtmpStreamingEventFailedLoadImage = 1,
+};
+
+/** 推流状态 */
+typedef NS_ENUM(NSUInteger, ARtmpStreamingState) {
+  /** 推流未开始或已结束。成功调用 removePublishStreamUrl 方法删除推流地址后，也会返回该状态。*/
+  ARtmpStreamingStateIdle = 0,
+  /** 正在连接推流服务器和 RTMP 服务器。调用 addPublishStreamUrl 方法后，会返回该状态。 */
+  ARtmpStreamingStateConnecting = 1,
+  /** 推流正在进行。成功推流后，会返回该状态*/
+  ARtmpStreamingStateRunning = 2,
+  /** 正在恢复推流。当 CDN 出现异常，或推流短暂中断时，SDK 会自动尝试恢复推流，并返回该状态。
+   
+   - 如成功恢复推流，则进入状态 ARtmpStreamingStateRunning(2)。
+   如服务器出错或 60 秒内未成功恢复，则进入状态 ARtmpStreamingStateFailure(4)。如果觉得 60 秒太长，也可以主动调用 removePublishStreamUrl 和 addPublishStreamUrl 方法尝试重连。
+   */
+  ARtmpStreamingStateRecovering = 3,
+  /** 推流失败。失败后，你可以通过返回的错误码排查错误原因，也可以再次调用 addPublishStreamUrl 重新尝试推流。 */
+  ARtmpStreamingStateFailure = 4,
+};
+
 #endif /* AREnumerates_h */
