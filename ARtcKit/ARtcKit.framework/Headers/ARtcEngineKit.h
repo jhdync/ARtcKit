@@ -833,26 +833,6 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
  */
 - (int)setLocalVoiceReverbOfType:(ARAudioReverbType)reverbType withValue:(NSInteger)value;
 
-/** 设置本地语音变声、美音或语聊美声效果。
-
- 通信场景下的用户或直播场景下的主播均可调用该方法为本地语音设置以下效果。成功设置以后，频道内的所有用户均可听到声音效果。
-
- - 变声效果：枚举值以 ARAudioVoiceChanger 为前缀。效果包括老男孩、小男孩、小女孩、猪八戒、空灵和绿巨人，通常用于语聊场景。
- - 美音效果：枚举值以 ARAudioVoiceBeauty 为前缀。效果包括浑厚、低沉、圆润、假音、饱满、清澈、高亢、嘹亮和空旷，通常用于语聊和唱歌场景。
- - 语聊美声效果：枚举值以 ARAudioGeneralBeautyVoice 为前缀。效果包括磁性（男）、清新（女）和活力（女），通常用于语聊场景。该功能主要细化了男声和女声各自的特点。
-
-**Note:**
-
- - 为达到更好的声音效果，AR 推荐在调用该方法前将 setAudioProfile 的 profile 参数设置为 ARAudioProfileMusicHighQuality(4) 或 ARAudioProfileMusicHighQualityStereo(5)。
- - 该方法对人声的处理效果最佳，AR 不推荐调用该方法处理含人声和音乐的音频数据。
- - 该方法不能与 setLocalVoiceReverbPreset 方法一同使用，否则先调的方法会不生效。更多注意事项，详见《变声与混响》。
-
-@param voiceChanger 本地语音的变声、美音或语聊美声效果选项，默认值为 ARAudioVoiceChangerOff，即原声。详见 ARAudioVoiceChanger 。
-
-@return 0方法调用成功，<0方法调用失败
-*/
-- (int)setLocalVoiceChanger:(ARAudioVoiceChanger)voiceChanger;
-
 /** 设置本地语音混响（含虚拟立体声效果）。
 
 **Note:**

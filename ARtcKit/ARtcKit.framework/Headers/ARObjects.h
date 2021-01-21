@@ -440,6 +440,15 @@ __attribute__((visibility("default"))) @interface ARtcLocalVideoStats : NSObject
  * ARVideoCodecTypeH264 = 2: （默认值）H.264。
  */
 @property (assign, nonatomic) ARVideoCodecType codecType;
+
+/** 弱网对抗前本端到边缘服务器的视频丢包率 (%)。
+ */
+@property (assign, nonatomic) NSInteger txPacketLossRate;
+
+/** 本地视频采集帧率 (fps)。
+ */
+@property (assign, nonatomic) NSInteger captureFrameRate;
+
 @end
 
 /** 本地音频统计信息
@@ -454,6 +463,9 @@ __attribute__((visibility("default"))) @interface ARtcLocalAudioStats : NSObject
 /** 发送码率的平均值，单位为 Kbps。
  */
 @property (assign, nonatomic) NSUInteger sentBitrate;
+/** 弱网对抗前本端到边缘服务器的音频丢包率 (%)。
+ */
+@property (assign, nonatomic) NSUInteger txPacketLossRate;
 @end
 
 /** 远端视频统计回调。
