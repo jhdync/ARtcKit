@@ -835,6 +835,8 @@ enum VIDEO_CODEC_TYPE {
     VIDEO_CODEC_EVP = 3,
     /** Enhanced H264 */
     VIDEO_CODEC_E264 = 4,
+	/** Standard Jpeg*/
+	VIDEO_CODEC_MJPG = 5,
 };
 
 /** Video Codec types for publishing streams. */

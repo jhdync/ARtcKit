@@ -504,7 +504,7 @@ typedef NS_ENUM(NSUInteger, ARVideoRenderMode ) {
 /** 视频镜像模式 */
 typedef NS_ENUM(NSUInteger, ARVideoMirrorMode ) {
     /**
-     0: (Default) 由 SDK 决定镜像模式，
+     0: (Default) 由 SDK 决定镜像模式
      */
     ARVideoMirrorModeAuto = 0,
     /**
