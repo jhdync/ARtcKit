@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "ARtcKit_iOS"
-  spec.version      = "4.1.2.5"
+  spec.version      = "4.1.3.0"
   spec.summary      = "AriOSSDK"
 
   # This description is used to generate tags and improve search results.
@@ -25,7 +25,7 @@ Pod::Spec.new do |spec|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   spec.description  = <<-DESC
-                    ARtcKit 是ar云平台的iOS SDK
+                    ARtcKit 是anyRTC云平台的iOS SDK
                    DESC
 
   spec.homepage     = "https://github.com/jhdync/ARtcKit"
