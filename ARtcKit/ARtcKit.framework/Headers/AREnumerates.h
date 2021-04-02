@@ -482,7 +482,7 @@ typedef NS_ENUM(NSUInteger, ARChannelProfile ) {
     /**
      1: 直播场景
      */
-    ARChannelProfileiveBroadcasting = 1,
+    ARChannelProfileLiveBroadcasting = 1,
     /**
      2: 游戏语音场景
      */
