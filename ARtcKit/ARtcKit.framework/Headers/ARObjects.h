@@ -36,7 +36,7 @@ __attribute__((visibility("default"))) @interface ARtcVideoCanvas : NSObject
  - MacOS: NSView
  */
 @property (strong, nonatomic) VIEW_CLASS* _Nullable view;
-/** 视频显示模式 */
+/** 视频显示模式*/
 @property (assign, nonatomic) ARVideoRenderMode renderMode;
 
 /**
@@ -44,11 +44,21 @@ __attribute__((visibility("default"))) @interface ARtcVideoCanvas : NSObject
  * 0 ~ 9
  * a ~ z A ~Z
  * "!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "<", "=", ".", ">", "?", "@", "[", "]", "^", "_", "{", "}", "|", "~", ",".
+ 
+** Note **
+ * 该参数默认值为空字符 ""。如果用户是通过 ARtcEngineKit 类的 joinChannelByToken 方法加入频道的，则将参数设为默认值，表示该用户在频道内的渲染视图。
+ * 如果用户是通过 ARtcChannel 类的 joinChannelByToken 方法加入频道的，则将该参数设为该 ARtcChannel 类对应的 channelId，表示该用户在该 channelId 对应频道内的渲染视图。
 */
 @property (copy, nonatomic) NSString * _Nullable channelId;
 /** 用户id */
 @property (copy, nonatomic) NSString * _Nonnull uid;
-/** 视图镜像模式，详见 ARVideoMirrorMode */
+/** 视图镜像模式，详见 ARVideoMirrorMode
+ 
+ **Note**:
+  
+ * 本地视图镜像模式：如果你使用前置摄像头，默认启动本地视图镜像模式；如果你使用后置摄像头，默认关闭本地视图镜像模式。
+ * 远端用户视图镜像模式：默认关闭远端用户的镜像模式。
+ */
 @property (assign, nonatomic) ARVideoMirrorMode mirrorMode;
 
 @end
