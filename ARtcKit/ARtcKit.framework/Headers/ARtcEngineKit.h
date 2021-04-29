@@ -533,7 +533,7 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 
 **Note**
  
- * 该方法在加入频道前后都能调用。
+ * 请在加入频道前调用该方法。
  * 如果你希望在通话中更新本地用户视图的渲染或镜像模式，请使用 setLocalRenderMode 方法。
  
  @param local 通过 ARtcVideoCanvas 设置本地视频显示属性。
@@ -604,7 +604,7 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 
 该方法用于在进入频道前启动本地视频预览。本地预览默认开启镜像功能。
 
-调用该 API 前，请调用：
+调用该 API 前，必须：
 
  * 调用 setupLocalVideo 设置预览窗口及属性
  * 调用 enableVideo 开启视频功能
@@ -646,15 +646,12 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 
 /** 开关本地视频发送
 
-成功调用该方法后，远端会触发 didVideoMuted 回调。你也可以使用 remoteVideoStateChangedOfUid 回调的：
- ARVideoRemoteStateStopped(0) 和 ARVideoRemoteStateReasonRemoteMuted(5)。
- ARVideoRemoteStateDecoding(2) 和 ARVideoRemoteStateReasonRemoteUnmuted(6)。
+成功调用该方法后，远端会触发 didVideoMuted 回调。
  
 **Note**
 
- * 相比于调用 enableLocalVideo 控制本地视频流发送，调用该方法响应速度更快。
- * 该方法不影响视频采集状态，因为没有禁用摄像头。
- * 该方法在加入频道前后都能调用。如果你在该方法后调用 setChannelProfile 方法，SDK 会根据你设置的频道场景以及用户角色，重新设置是否取消发布本地视频。因此我们建议在 setChannelProfile 后调用该方法。
+ * 调用该方法时，SDK 不再发送本地视频流，但摄像头仍然处于工作状态。相比于 enableLocalVideo 用于控制本地视频流发送的方法，该方法响应速度更快。该方法不影响本地视频流获取，没有禁用摄像头。
+ * 如果你在该方法后调用 setChannelProfile 方法，SDK 会根据你设置的频道场景以及用户角色，重新设置是否停止发送本地视频。因此我们建议在 setChannelProfile 后调用该方法。
 
  @param mute 是否发送本地视频流
  
