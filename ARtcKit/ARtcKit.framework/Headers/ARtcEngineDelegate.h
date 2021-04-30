@@ -251,7 +251,6 @@
  */
 - (void)rtcEngine:(ARtcEngineKit * _Nonnull)engine didAudioPublishStateChange:(NSString *_Nonnull)channel oldState:(ARStreamPublishState)oldState newState:(ARStreamPublishState)newState elapseSinceLastState:(NSInteger)elapseSinceLastState;
 
-
 /** 视频发布状态改变回调
 
  本地视频的发布状态发生改变时，SDK会触发该回调报告当前的本地视频发布状态。

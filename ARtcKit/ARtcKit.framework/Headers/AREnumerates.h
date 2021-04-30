@@ -956,6 +956,30 @@ typedef NS_ENUM(NSInteger, ARLocalVideoStreamError) {
     5: 本地视频编码失败。
     */
     ARLocalVideoStreamErrorEncodeFailure = 5,
+    /**
+    6: （仅适用于 iOS）应用处于后台
+     
+     @since v4.2.0
+    */
+    ARLocalVideoStreamErrorCaptureInBackGround = 6,
+    /**
+    7: (仅支持 iOS) 应用窗口处于侧拉、分屏、画中画模式。
+        
+     @since v4.2.0
+    */
+    ARLocalVideoStreamErrorCaptureMultipleForegroundApps = 7,
+    /**
+    11:（仅支持 macOS）调用 startScreenCaptureByWindowId 方法共享窗口时， 共享窗口处于最小化的状态。
+     
+     @since v4.2.0
+    */
+    ARLocalVideoStreamErrorScreenCaptureWindowMinimized = 11,
+    /**
+     12:（仅支持 macOS）该错误码表示通过窗口 ID 共享的窗口已关闭，或通过窗口 ID 共享的全屏窗口已退出全屏。退出全屏模式后，远端用户将无法看到共享的窗口。为避免远端用户看到黑屏，Agora 建议你立即结束本次共享。
+           
+     @since v4.2.0
+    */
+    ARLocalVideoStreamErrorScreenCaptureWindowClosed = 12
 };
 
 /** 摄像头采集偏好 */
