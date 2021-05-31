@@ -3227,7 +3227,7 @@ public:
 };
 
 
-#if defined(_WIN32)||defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IOS)
+#if defined(_WIN32)||defined(__ANDROID__) || (defined(__APPLE__) && (TARGET_OS_IOS || TARGET_OS_MAC))
 /** The capture type of the custom video source.
  */
 enum VIDEO_CAPTURE_TYPE {
@@ -7459,7 +7459,7 @@ public:
     virtual int updateScreenCaptureRegion(const Rect *rect) = 0;
 #endif
 
-#if defined(_WIN32)||defined(__ANDROID__) || (defined(__APPLE__) && TARGET_OS_IOS)
+#if defined(_WIN32)||defined(__ANDROID__) || (defined(__APPLE__) && (TARGET_OS_IOS || TARGET_OS_MAC))
     /** Sets a custom video source.
      *
      * During real-time communication, the AR SDK enables the default video input device, that is, the built-in camera to

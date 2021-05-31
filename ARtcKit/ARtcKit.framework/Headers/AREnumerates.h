@@ -498,7 +498,11 @@ typedef NS_ENUM(NSUInteger, ARVideoRenderMode ) {
   /**
    2:优先保证视频内容全部显示。视频尺寸等比缩放，直至视频窗口的一边与视窗边框对齐。如果视频尺寸与显示视窗尺寸不一致，在保持长宽比的前提下，将视频进行缩放后填满视窗，缩放后的视频四周会有一圈黑边。
    */
-   ARVideoRenderModeFit = 2
+   ARVideoRenderModeFit = 2,
+   /**
+   4:视频尺寸进行缩放和拉伸以充满显示视窗。
+   */
+   ARVideoRenderModeFill = 4
 };
 
 /** 视频镜像模式 */

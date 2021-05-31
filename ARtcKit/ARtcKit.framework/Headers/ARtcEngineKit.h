@@ -1313,8 +1313,11 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
  @param sampleRate       外部音频源的采样率 (Hz)，可设置为 8000，16000，32000，44100 或 48000
  @param channelsPerFrame 外部音频源的通道数，可设置为 1 或 2:
- - 1: 单声道
- - 2: 双声道
+ * 1: 单声道
+ * 2: 双声道
+ 
+**Note:**
+该方法必须在 joinChannelByToken 和 startPreview 前调用
  */
 - (void)enableExternalAudioSourceWithSampleRate:(NSUInteger)sampleRate channelsPerFrame:(NSUInteger)channelsPerFrame;
 
@@ -1363,6 +1366,9 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
  * YES: 使用推送 (push) 模式
  * NO: 使用拉 (pull) 模式（暂不支持）
+ 
+ **Note:**
+ 该方法需要在加入频道前调用。
  */
 - (void)setExternalVideoSource:(BOOL)enable useTexture:(BOOL)useTexture pushMode:(BOOL)pushMode;
 
@@ -2131,7 +2137,6 @@ SDK 设有 2 个日志文件，每个文件大小为 512 KB。如果你将 fileS
  @return json字符串
  */
 - (NSString * _Nullable)getParameter:(NSString * _Nonnull)parameter args:(NSString * _Nullable)args;
-
 
 @end
 
