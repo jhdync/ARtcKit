@@ -1300,6 +1300,71 @@ SDK 支持通话过程中在客户端进行录音。调用该方法后，你可�
 
 //MARK: - 音频自渲染
 
+/**-----------------------------------------------------------------------------
+ * @name 音频自渲染
+ * -----------------------------------------------------------------------------
+ */
+
+/** 开启外部音频渲染
+
+ 该方法适用于需要自行渲染音频的场景。开启外部音频渲染后，你可以通过调用 pullPlaybackAudioFrameRawData / pullPlaybackAudioFrameSampleBufferByLengthInByte 方法拉取远端音频数据App 可以对拉取到的原始音频数据进行处理后再渲染，获取想要的音频效果。
+
+ 该方法需要在加入频道前调用。
+
+ @param sampleRate 外部音频渲染的采样率 (Hz)，可设置为 16000，32000，44100 或 48000。
+ @param channels 外部音频渲染的声道数，可设置为 1 或 2：
+
+ - 1: 单声道
+ - 2: 双声道
+
+ @note 开启外部音频渲染后，App 会无法从 onPlaybackAudioFrame 回调中获得数据。
+ */
+- (void)enableExternalAudioSink:(NSUInteger)sampleRate channels:(NSUInteger)channels;
+
+/** 关闭外部音频渲染
+ */
+- (void)disableExternalAudioSink;
+
+/** 拉取 RawData 格式的远端音频数据。
+
+ 使用该方法前，你需要调用 enableExternalAudioSink 方法通知 app 开启并设置外部渲染。
+
+ 调用该方法后，app 会采取主动拉取的方式获取远端已解码和混音后的音频数据，用于音频播放。
+
+ **Note**
+
+ - 该方法需要在加入频道后调用。调用该方法后，App 会无法从 onPlaybackAudioFrame 回调中获得数据。
+ - 该方法和 onPlaybackAudioFrame 回调相比，区别在于：
+    - onPlaybackAudioFrame：SDK 通过该回调将音频数据传输给 app。如果 app 处理延时，可能会导致音频播放抖动。
+    - pullPlaybackAudioFrameRawData：app 主动拉取音频数据。通过设置音频帧的数据和字节数，SDK 可以调整缓存，帮助 app 处理延时，从而有效避免音频播放抖动。
+
+ @param data 需要拉取的音频数据，格式为 byte[]。
+ @param lengthInByte 待拉取音频数据的字节数，单位为 byte。该参数的取值与音频数据的时长、你在 enableExternalAudioSink 中设置的 sampleRate 和 channels 参数相关。建议音频数据的时长至少为 10 毫秒。计算公式为：lengthInByte = sampleRate / 1000 × 2 × channels × 音频数据时长（毫秒）。
+
+ @return YES方法调用成功，NO方法调用失败
+ */
+- (BOOL)pullPlaybackAudioFrameRawData:(void* _Nonnull)data lengthInByte:(NSUInteger)lengthInByte;
+
+/** 拉取 SampleBuffer 格式的远端音频数据。
+
+ 调用该方法前，你需要调用 enableExternalAudioSink 方法通知 app 开启并设置外部渲染。
+
+ 调用该方法后，app 会采取主动拉取的方式获取远端已解码和混音后的音频数据，用于音频播放。
+
+ **Note**
+
+ - 该方法需要在加入频道后调用。调用该方法后，app 会无法从 onPlaybackAudioFrame 回调中获得数据。
+ - 该方法和 onPlaybackAudioFrame 方法相比，区别在于：
+    - onPlaybackAudioFrame：SDK 通过该回调将音频数据传输给 app。如果 app 处理延时，可能会导致音频播放抖动；
+    - pullPlaybackAudioFrameSampleBufferByLengthInByte：app 主动拉取音频数据。通过设置音频帧的数据和字节数，SDK 可以调整缓存，帮助 app 处理延时，从而有效避免音频播放抖动。
+
+ @param lengthInByte 待拉取音频数据的字节数，单位为 byte。该参数的取值与音频数据的时长、你在 enableExternalAudioSink 中设置的 sampleRate 和 channels 参数相关，且该参数应能被 sampleRate 值整除。建议音频数据的时长至少为 10 毫秒。计算公式为：lengthInByte = sampleRate / 1000 × 2 × channels × 音频数据时长（毫秒）。
+
+ @return YES方法调用成功，NO方法调用失败
+ */
+- (CMSampleBufferRef _Nullable)pullPlaybackAudioFrameSampleBufferByLengthInByte:(NSUInteger)lengthInByte;
+
+
 //MARK: - 音频自采集 (仅适用于 push 模式)
 
 /**-----------------------------------------------------------------------------
