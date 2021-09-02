@@ -709,6 +709,22 @@ __attribute__((visibility("default"))) @interface ARtcEngineKit : NSObject
 
 //MARK: - 视频前处理及后处理
 
+/** 设置美颜效果选项
+
+  **Note**
+ 请在调用 enableVideo 方法后，调用该方法。
+ 
+ @param enable 是否开启美颜功能：
+ 
+ * YES: 开启
+ * NO:（默认）关闭
+
+ @param options 美颜选项.
+
+ @return 0方法调用成功，<0方法调用失败
+ */
+- (int)setBeautyEffectOptions:(BOOL)enable options:(ARBeautyOptions* _Nullable)options;
+
 //MARK: - 音频播放路由
 
 /**-----------------------------------------------------------------------------

@@ -1814,4 +1814,14 @@ typedef NS_ENUM(NSInteger, ARAudioReverbPreset) {
     ARAudioReverbPresetVirtualStereo = 0x00200001
 };
 
+/** 亮度明暗对比度 */
+typedef NS_ENUM(NSUInteger, ARLighteningContrastLevel) {
+    /** 低对比度 */
+   ARLighteningContrastLow = 0,
+    /**（默认）正常对比度 */
+   ARLighteningContrastNormal = 1,
+    /** 高对比度 */
+   ARLighteningContrastHigh = 2,
+};
+
 #endif /* AREnumerates_h */

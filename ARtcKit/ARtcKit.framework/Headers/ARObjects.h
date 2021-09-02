@@ -797,6 +797,38 @@ __attribute__((visibility("default"))) @interface ARChannelMediaRelayConfigurati
 - (BOOL)removeDestinationInfoForChannelName:(NSString *_Nonnull)channelName;
 @end
 
+/** 在 setBeautyEffectOptions 中用于设置美颜选项的类 */
+__attribute__((visibility("default"))) @interface ARBeautyOptions : NSObject
+
+/** 亮度明暗对比度
+
+- 0：低对比度
+- 1：（默认）正常对比度
+- 2：高对比度
+*/
+@property(nonatomic, assign) ARLighteningContrastLevel lighteningContrastLevel;
+
+/** 亮度
+
+ 默认值 0.7，取值范围为 [0.0,1.0]，其中 0.0 表示原始亮度。可用来实现美白等视觉效果。
+ */
+@property(nonatomic, assign) float lighteningLevel;
+
+/** 平滑度
+
+ 默认值 0.5，取值范围为 [0.0,1.0]，其中 0.0 表示原始平滑度。可用来实现祛痘、磨皮等视觉效果。
+ */
+@property(nonatomic, assign) float smoothnessLevel;
+
+/** 红色度
+
+ 默认值 0.1，取值范围为 [0.0,1.0]，其中 0.0 表示原始红色度。可用来实现红润肤色等视觉效果。
+
+*/
+@property(nonatomic, assign) float rednessLevel;
+
+@end
+
 /** 提供旁路推流时特定用户音频/视频转码设置的类
  */
 __attribute__((visibility("default"))) @interface ARLiveTranscodingUser: NSObject
