@@ -95,11 +95,11 @@ Pod::Spec.new do |spec|
   #  Not including the public_header_files will make all headers public.
   #
 
-  spec.source_files  = "ARtcKit", "ARtcKit/**/*.{h,m}"
-  #spec.exclude_files = "Classes/Exclude"
+  # spec.source_files  = "ARtcKit", "ARtcKit/**/*.{h,m}"
+  # spec.exclude_files = "Classes/Exclude"
 
-  spec.public_header_files = "ARtcKit/**/*.{h}"
-  spec.vendored_frameworks  = "ARtcKit/**/*.framework"
+  # spec.public_header_files = "ARtcKit/**/*.{h}"
+  spec.vendored_frameworks  = "ARtcKit.framework"
   spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
   spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
