@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "ARtcKit_iOS"
-  spec.version      = "4.2.2.5"
+  spec.version      = "4.2.2.6"
   spec.summary      = "AriOSSDK"
 
   # This description is used to generate tags and improve search results.
@@ -80,9 +80,11 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source       = { :git => "https://github.com/jhdync/ARtcKit.git", 
-                     :tag => "#{spec.version}",
-                     :submodules => true }
+  # spec.source       = { :git => "https://github.com/jhdync/ARtcKit.git", 
+  #                   :tag => "#{spec.version}",
+  #                   :submodules => true }
+
+  spec.source = { :http => 'https://oss.agrtc.cn/oss/fdfs/09be4162a8807bfde3b504069dea9288.zip?alias=iOS.zip' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
