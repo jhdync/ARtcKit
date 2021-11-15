@@ -84,7 +84,7 @@ Pod::Spec.new do |spec|
   #                   :tag => "#{spec.version}",
   #                   :submodules => true }
 
-  spec.source = { :http => 'http://oss.agrtc.cn:13468/oss/fdfs/09be4162a8807bfde3b504069dea9288.zip?alias=iOS.zip' }
+  spec.source = { :http => 'https://oss.agrtc.cn/oss/fdfs/09be4162a8807bfde3b504069dea9288.zip?alias=iOS.zip' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -96,6 +96,7 @@ Pod::Spec.new do |spec|
   #
 
   # spec.source_files  = "ARtcKit", "ARtcKit/**/*.{h,m}"
+  # spec.source_files  = "Classes", "Classes/**/*.{h,m}"
   # spec.exclude_files = "Classes/Exclude"
 
   # spec.public_header_files = "ARtcKit/**/*.{h}"
