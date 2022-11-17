@@ -16,7 +16,7 @@ Pod::Spec.new do |spec|
   #
 
   spec.name         = "ARtcKit_iOS"
-  spec.version      = "4.2.2.6"
+  spec.version      = "4.3.0.2"
   spec.summary      = "AriOSSDK"
 
   # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
                     ARtcKit 是anyRTC云平台的iOS SDK
                    DESC
 
-  spec.homepage     = "https://github.com/jhdync/ARtcKit"
+  spec.homepage     = "https://docs.anyrtc.io/download"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
 
@@ -80,11 +80,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  # spec.source       = { :git => "https://github.com/jhdync/ARtcKit.git", 
-  #                   :tag => "#{spec.version}",
-  #                   :submodules => true }
-
-  spec.source = { :http => 'https://oss.agrtc.cn/oss/fdfs/09be4162a8807bfde3b504069dea9288.zip?alias=iOS.zip' }
+  spec.source = { :http => 'https://artcsdk.oss-cn-shanghai.aliyuncs.com/38ff4a8926049867f187c372422cc0e1.zip' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
