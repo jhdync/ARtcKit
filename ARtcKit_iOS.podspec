@@ -80,7 +80,7 @@ Pod::Spec.new do |spec|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  spec.source = { :http => 'https://artcsdk.oss-cn-shanghai.aliyuncs.com/ce0b06892f00337ca6609a05f6ebc720.zip' }
+  spec.source = { :http => 'https://artcsdk.oss-cn-shanghai.aliyuncs.com/2737c0a277350abff31eb28d9ac639a7.zip' }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
